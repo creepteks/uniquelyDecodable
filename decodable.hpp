@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <map>
@@ -14,9 +15,26 @@ bool isUndecodable(map<string, vector<string>>);
 // func implementations
 map<string, vector<string>> doMapInsertion(map<string, vector<string>> _map, string key, vector<string> entries)
 {
-    // FIXME if the entries are null or empty, I shouldn't add that to the map
-    // TODO when there are no items to add, it's probably the end of the work of the algorithm
-    _map.insert({key, entries}); // or _map.insert(pair<string, vector<string>> (key, entries))
+    // if the entries are null or empty, I shouldn't add that to the map
+    if (_map.find(key) == _map.end())
+    {
+        // the map do not contain the given key, so I have to add it even if the entries are empty
+        _map.insert({key, entries}); // or _map.insert(pair<string, vector<string>> (key, entries))
+        return _map;
+    }
+    // the map already contains the key 
+    // if (entries.size() <= 0)
+    // {
+    //     // there is nothing to add to the key as the entries are not there
+    //     return _map;
+    // }
+    auto it = _map.find(key)->second;
+
+    for (size_t i = 0; i < entries.size(); i++)
+    {
+        it.push_back(entries[i]);
+    }
+
     return _map;
 }
 
@@ -49,7 +67,7 @@ vector<string> findSuffixes (map<string, vector<string>> map, string list1, stri
 
             // check if aj can be found inside ai
             string prefix = it_i->substr(0, it_j->length());
-            if (!prefix.compare(*it_j))
+            if (prefix.compare(*it_j))
                 continue; // no suffix will be found since ai is not equal to some aj + suffix
 
             string suff = it_i->substr(it_j->length(), it_i->length() - it_j->length());
@@ -67,16 +85,20 @@ bool isDecodable(map<string, vector<string>> _map)
     map<string, vector<string>>::iterator lastCol = --_map.end();
 
     if (lastCol->second.size() <= 0)
-        return true;
-
-    // if the last column is an exact copy of one of the previous columns, the code is decodable
-    // int matchItems = 0;
-    // for (auto sn = 0; sn < count; sn++)
-    // {
-    //     /* code */
-    // }
+        return true; // NOTE the code is detactable
     
-    return false;
+    // if the last column is a copy of the previous to the last column, i.e. there full intersection between them, the code is decodable
+    map<string, vector<string>>::iterator previousToLastCol = ----_map.end();
+    std::sort(previousToLastCol->second.begin(), previousToLastCol->second.end());
+    std::sort(lastCol->second.begin(), lastCol->second.end());
+    std::vector<string> v3;
+    std::set_intersection(previousToLastCol->second.begin(), previousToLastCol->second.end(), lastCol->second.begin(), lastCol->second.end(), std::back_inserter(v3));
+    if (v3 == previousToLastCol->second && v3 == lastCol->second)
+    {
+        return true; // NOTE the code is decodable
+    }
+    
+    return false; // NOTE the code is not decodable
 }
 
 bool isUndecodable(map<string, vector<string>> _map)
@@ -96,7 +118,7 @@ bool isUndecodable(map<string, vector<string>> _map)
             }
         }
     }
-    // I did not find a match, NOTE the code is detectable
+    // I did not find a match, NOTE the code is decodable
     return false;
 }
 // test functions

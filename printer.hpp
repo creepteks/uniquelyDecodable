@@ -6,6 +6,7 @@ void printUsage();
 void printSeperator(int);
 void printEmptySpace(int);
 void printLicence();
+void printAskForCodeWords();
 
 void printUsage()
 {
@@ -15,6 +16,15 @@ void printUsage()
 
     cout << "enter the code words to determine if it is uniquely decodable" << endl;
     cout << "start by entering code words one by one without any space character" << endl;
+    printEmptySpace(1);
+    cout << "when you're finished entering code words, just press Enter" << endl;
+    printEmptySpace(1);
+}
+
+void printAskForCodeWords()
+{
+    printSeperator(1);
+    cout << "enter your code (enter nothing and press ENTER if you're done)" << endl;
 }
 
 void printSeperator(int lines)
