@@ -15,9 +15,6 @@ void printUsage()
 
     cout << "enter the code words to determine if it is uniquely decodable" << endl;
     cout << "start by entering code words one by one without any space character" << endl;
-    
-    // printEmptySpace(1);
-    // printSeperator(1);
 }
 
 void printSeperator(int lines)
