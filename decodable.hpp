@@ -23,13 +23,12 @@ map<string, vector<string>> doMapInsertion(map<string, vector<string>> _map, str
     }
 
     // reaching here means the map already contains the key, so
-    auto it = _map.find(key)->second;
+    auto* it = &_map.find(key)->second;
 
     for (size_t i = 0; i < entries.size(); i++)
     {
-        it.push_back(entries[i]);
+        it->push_back(entries[i]);
     }
-    _map.find(key)->second = it;
     return _map;
 }
 
