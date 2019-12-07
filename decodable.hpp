@@ -29,7 +29,7 @@ map<string, vector<string>> doMapInsertion(map<string, vector<string>> _map, str
     {
         it.push_back(entries[i]);
     }
-
+    _map.find(key)->second = it;
     return _map;
 }
 
