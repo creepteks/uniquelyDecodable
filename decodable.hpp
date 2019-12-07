@@ -15,19 +15,14 @@ bool isUndecodable(map<string, vector<string>>);
 // func implementations
 map<string, vector<string>> doMapInsertion(map<string, vector<string>> _map, string key, vector<string> entries)
 {
-    // if the entries are null or empty, I shouldn't add that to the map
     if (_map.find(key) == _map.end())
     {
         // the map do not contain the given key, so I have to add it even if the entries are empty
         _map.insert({key, entries}); // or _map.insert(pair<string, vector<string>> (key, entries))
         return _map;
     }
-    // the map already contains the key 
-    // if (entries.size() <= 0)
-    // {
-    //     // there is nothing to add to the key as the entries are not there
-    //     return _map;
-    // }
+
+    // reaching here means the map already contains the key, so
     auto it = _map.find(key)->second;
 
     for (size_t i = 0; i < entries.size(); i++)
@@ -87,13 +82,14 @@ bool isDecodable(map<string, vector<string>> _map)
     if (lastCol->second.size() <= 0)
         return true; // NOTE the code is detactable
     
-    // if the last column is a copy of the previous to the last column, i.e. there full intersection between them, the code is decodable
+    // if the last column is a copy of the previous to the last column, the code is decodable
     map<string, vector<string>>::iterator previousToLastCol = ----_map.end();
     std::sort(previousToLastCol->second.begin(), previousToLastCol->second.end());
     std::sort(lastCol->second.begin(), lastCol->second.end());
-    std::vector<string> v3;
-    std::set_intersection(previousToLastCol->second.begin(), previousToLastCol->second.end(), lastCol->second.begin(), lastCol->second.end(), std::back_inserter(v3));
-    if (v3 == previousToLastCol->second && v3 == lastCol->second)
+    // std::vector<string> v3;
+    // std::set_intersection(previousToLastCol->second.begin(), previousToLastCol->second.end(), lastCol->second.begin(), lastCol->second.end(), std::back_inserter(v3));
+    // if (v3 == previousToLastCol->second && v3 == lastCol->second)
+    if (previousToLastCol->second == lastCol->second) 
     {
         return true; // NOTE the code is decodable
     }

@@ -20,11 +20,11 @@ void senarioIII();
 int main()
 {
     // check decodability
-    // senarioI();
+    senarioI();
     // senarioII();
     
     // check undecodability
-    senarioIII();
+    // senarioIII();
     return 0;
 }
 
