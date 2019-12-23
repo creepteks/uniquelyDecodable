@@ -6,46 +6,44 @@
 using namespace std;
 
 // func prototypes
-map<string, vector<string>> doMapInsertion(map<string, vector<string>>, string, vector<string>);
+void doMapInsertion(map<string, vector<string>>*, string, vector<string>);
 vector<string> findSuffixes(map<string, vector<string>>, string list1, string list2);
-bool foundMatch(map<string, vector<string>>);
-bool isDecodable(map<string, vector<string>>);
-bool isUndecodable(map<string, vector<string>>);
+bool isDecodable(map<string, vector<string>>*);
+bool isUndecodable(map<string, vector<string>>*);
 
 // func implementations
-map<string, vector<string>> doMapInsertion(map<string, vector<string>> _map, string key, vector<string> entries)
+void doMapInsertion(map<string, vector<string>>* _map, string key, vector<string> entries)
 {
-    if (_map.find(key) == _map.end())
+    if (_map->find(key) == _map->end())
     {
         // the map do not contain the given key, so I have to add it even if the entries are empty
-        _map.insert({key, entries}); // or _map.insert(pair<string, vector<string>> (key, entries))
-        return _map;
+        _map->insert({key, entries}); // or _map->insert(pair<string, vector<string>> (key, entries))
+        return;
     }
 
     // reaching here means the map already contains the key, so
-    auto* it = &_map.find(key)->second;
+    auto* it = &_map->find(key)->second;
 
     for (size_t i = 0; i < entries.size(); i++)
     {
         it->push_back(entries[i]);
     }
-    return _map;
 }
 
-vector<string> findSuffixes (map<string, vector<string>> map, string list1, string list2)
+vector<string> findSuffixes (map<string, vector<string>> _map, string list1, string list2)
 {
     vector<string> foundSuffixes;
-    // check if map contains the key for list1
-    auto iterator_list1 = map.find(list1);
-    if (iterator_list1 == map.end())
+    // check if _map contains the key for list1
+    auto iterator_list1 = _map.find(list1);
+    if (iterator_list1 == _map.end())
     {
         cerr << list1 << " is not a valid key or has not been added to the map" << endl;
         return foundSuffixes;
     } 
 
     // check if map containt the key for list2
-    auto iterator_list2 = map.find(list2);
-    if (iterator_list2 == map.end())
+    auto iterator_list2 = _map.find(list2);
+    if (iterator_list2 == _map.end())
     {
         cerr << list2 << " is not a valid key or has not been added to the map" << endl;
         return foundSuffixes;
@@ -73,42 +71,35 @@ vector<string> findSuffixes (map<string, vector<string>> map, string list1, stri
     return foundSuffixes;
 }
 
-bool isDecodable(map<string, vector<string>> _map)
+bool isDecodable(map<string, vector<string>>* _map)
 {
     // if the last comumn in the table is empty, the code is decodable
-    map<string, vector<string>>::iterator lastCol = --_map.end();
+    map<string, vector<string>>::iterator lastCol = --_map->end();
 
     if (lastCol->second.size() <= 0)
         return true; // NOTE the code is detactable
     
     // // if the last column is a copy of the previous to the last column, the code is decodable
     std::sort(lastCol->second.begin(), lastCol->second.end());
-    map<string, vector<string>>::iterator prevToLast = ----_map.end();
+    map<string, vector<string>>::iterator prevToLast = ----_map->end();
     do
     {
         // FIXME check for iterator validity
-        // std::vector<string> v3;
-        // std::set_intersection(previousToLastCol->second.begin(), previousToLastCol->second.end(), lastCol->second.begin(), lastCol->second.end(), std::back_inserter(v3));
-        // if (v3 == previousToLastCol->second && v3 == lastCol->second)
         std::sort(prevToLast->second.begin(), prevToLast->second.end());
         if (prevToLast->second == lastCol->second)
         {
             return true; // NOTE the code is decodable
         }
-        prevToLast--;
-    } while (prevToLast != _map.end());
-    
-    
-
-    
+        --prevToLast;
+    } while (prevToLast != _map->end() && prevToLast != _map->begin());
     
     return false; // NOTE the code is not decodable
 }
 
-bool isUndecodable(map<string, vector<string>> _map)
+bool isUndecodable(map<string, vector<string>>* _map)
 {
-    map<string, vector<string>>::iterator firstColIterator = _map.begin();
-    map<string, vector<string>>::iterator lastColIterator = --_map.end();
+    map<string, vector<string>>::iterator firstColIterator = _map->begin();
+    map<string, vector<string>>::iterator lastColIterator = --_map->end();
     // iterating through items of the last column
     for (auto sn = lastColIterator->second.begin(); sn != lastColIterator->second.end(); sn++)
     {
