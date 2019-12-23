@@ -7,10 +7,10 @@ int main()
 
     printUsage();
 
-    auto res = readInput();
+    vector<string> codeWords = readInput();
 
     // Step I: creating S0 column from the words we gonna call A0s
-    map = doMapInsertion(map, "s0", res);
+    map = doMapInsertion(map, "s0", codeWords);
 
     // Step II: creating S1 by comparing S0 elements againts each other
     vector<string> a1_suffixes = findSuffixes(map, "s0", "s0");
@@ -19,15 +19,15 @@ int main()
     // Step III and IV: creating Sn by comparing Sn-1 and S0; then check decodability of the code
     while (true)
     {
-        if (isDecodable(map)) 
-        {
-            cout << "code is decodable" << endl;
-            break;
-        }
-
         if (isUndecodable(map))
         {
             cout << "code is undecodable" << endl;
+            break;
+        }
+
+        if (isDecodable(map)) 
+        {
+            cout << "code is decodable" << endl;
             break;
         }
 

@@ -81,17 +81,26 @@ bool isDecodable(map<string, vector<string>> _map)
     if (lastCol->second.size() <= 0)
         return true; // NOTE the code is detactable
     
-    // if the last column is a copy of the previous to the last column, the code is decodable
-    map<string, vector<string>>::iterator previousToLastCol = ----_map.end();
-    std::sort(previousToLastCol->second.begin(), previousToLastCol->second.end());
+    // // if the last column is a copy of the previous to the last column, the code is decodable
     std::sort(lastCol->second.begin(), lastCol->second.end());
-    // std::vector<string> v3;
-    // std::set_intersection(previousToLastCol->second.begin(), previousToLastCol->second.end(), lastCol->second.begin(), lastCol->second.end(), std::back_inserter(v3));
-    // if (v3 == previousToLastCol->second && v3 == lastCol->second)
-    if (previousToLastCol->second == lastCol->second) 
+    map<string, vector<string>>::iterator prevToLast = ----_map.end();
+    do
     {
-        return true; // NOTE the code is decodable
-    }
+        // FIXME check for iterator validity
+        // std::vector<string> v3;
+        // std::set_intersection(previousToLastCol->second.begin(), previousToLastCol->second.end(), lastCol->second.begin(), lastCol->second.end(), std::back_inserter(v3));
+        // if (v3 == previousToLastCol->second && v3 == lastCol->second)
+        std::sort(prevToLast->second.begin(), prevToLast->second.end());
+        if (prevToLast->second == lastCol->second)
+        {
+            return true; // NOTE the code is decodable
+        }
+        prevToLast--;
+    } while (prevToLast != _map.end());
+    
+    
+
+    
     
     return false; // NOTE the code is not decodable
 }
